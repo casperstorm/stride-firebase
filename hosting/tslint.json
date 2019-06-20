@@ -1,0 +1,53 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-config-prettier"
+  ],
+  "rulesDirectory": [
+    "tslint-plugin-prettier"
+  ],
+  "rules": {
+    "array-type": [
+      true,
+      "generic"
+    ],
+    "arrow-return-shorthand": [
+      true,
+      "multiline"
+    ],
+    "no-submodule-imports": false,
+    "import-spacing": true,
+    "interface-name": false,
+    "no-trailing-whitespace": [
+      true,
+      "ignore-template-strings"
+    ],
+    "object-literal-sort-keys": false,
+    "max-classes-per-file": false,
+    "no-console": false,
+    "prettier": [
+      true,
+      {
+        "arrowParens": "always",
+        "bracketSpacing": true,
+        "jsxBracketSameLine": true,
+        "printWidth": 80,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "es5",
+        "useTabs": false
+      }
+    ],
+    "space-before-function-paren": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ]
+  },
+  "jsRules": {
+    "no-empty": true
+  }
+}
