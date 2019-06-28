@@ -1,8 +1,9 @@
-import { Button, Icon, Layout, Menu } from 'antd'
+import { Icon, Layout, Menu } from 'antd'
 import React from 'react'
 import { Link, Route } from 'react-router-dom'
 import Estimator from './pages/estimator'
 import Login from './pages/login'
+import Records from './pages/records'
 
 const { Header, Sider, Content } = Layout
 
@@ -39,7 +40,8 @@ class App extends React.PureComponent<{}, State> {
             </Menu.Item>
             <Menu.Item key="3">
               <Icon type="upload" />
-              <span>nav 3</span>
+              <span>records</span>
+              <Link to="/records" />
             </Menu.Item>
           </Menu>
         </Sider>
@@ -60,6 +62,7 @@ class App extends React.PureComponent<{}, State> {
             }}>
             <Route path="/login" component={Login} />
             <Route path="/estimator" component={Estimator} />
+            <Route path="/records" component={Records} />
           </Content>
         </Layout>
       </Layout>
