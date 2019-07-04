@@ -1,9 +1,16 @@
 import { Icon, Layout, Menu } from 'antd'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link, Route } from 'react-router-dom'
+import { Dispatch } from 'redux'
 import Estimator from './pages/estimator'
 import Login from './pages/login'
 import Records from './pages/records'
+import * as ACTIONS from './state/actions'
+import { AppState } from './state/store'
 
 const { Header, Sider, Content } = Layout
 
@@ -11,9 +18,24 @@ interface State {
   collapsed: boolean
 }
 
-class App extends React.PureComponent<{}, State> {
+interface Props {
+  setUser: (user: firebase.User) => void
+  clearUser: () => void
+}
+
+class App extends React.PureComponent<Props, State> {
   public state = {
     collapsed: false,
+  }
+
+  public componentDidMount = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.props.setUser(user)
+      } else {
+        this.props.clearUser()
+      }
+    })
   }
 
   public toggle = () => {
@@ -70,4 +92,14 @@ class App extends React.PureComponent<{}, State> {
   }
 }
 
-export default App
+const mapStateToProps = (state: AppState) => ({})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setUser: (user: firebase.User) => dispatch(ACTIONS.setUser(user)),
+  clearUser: () => dispatch(ACTIONS.clearUser()),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
