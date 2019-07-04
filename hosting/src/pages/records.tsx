@@ -7,20 +7,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Record } from '../entities/record'
-import * as ACTIONS from '../state/actions'
 import * as selectors from '../state/selectors'
 import { AppState } from '../state/store'
 
 interface Props {
-  user?: firebase.User
   records: Array<Record>
-  setRecords: (records: Array<Record>) => void
 }
 
 class Records extends React.PureComponent<Props, {}> {
-  public documentRef?: firebase.firestore.DocumentReference
-  public observer?: () => void
-
   public columns = [
     {
       title: 'Distance',
@@ -60,63 +54,17 @@ class Records extends React.PureComponent<Props, {}> {
     },
   ]
 
-  constructor(props: Props) {
-    super(props)
-
-    const { user } = this.props
-    if (!user) {
-      return
-    }
-
-    this.documentRef = firebase
-      .firestore()
-      .collection('users')
-      .doc(user.uid)
-  }
-
-  public componentDidMount = async () => {
-    if (!this.documentRef) {
-      return
-    }
-
-    this.observer = this.documentRef
-      .collection('records')
-      .onSnapshot(this.onRecordsUpdate)
-  }
-
-  public componentWillUnmount() {
-    if (this.observer) {
-      this.observer()
-    }
-  }
-
   public render() {
     const { records } = this.props
-    console.log(records)
     return <Table rowKey="key" dataSource={records} columns={this.columns} />
-  }
-
-  private onRecordsUpdate = (snapshot: firebase.firestore.QuerySnapshot) => {
-    const records: Array<Record> = []
-    snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
-      const rawRecord = doc.data() as Record
-      const data = { ...rawRecord, key: doc.id }
-      const record: Record = new Record(data)
-      records.push(record)
-    })
-
-    this.props.setRecords(records)
   }
 }
 
 const mapStateToProps = (state: AppState) => ({
-  user: state.auth.user,
   records: selectors.selectAllRecords(state),
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setRecords: (records: Array<Record>) => dispatch(ACTIONS.setRecords(records)),
-})
+const mapDispatchToProps = (dispatch: Dispatch) => ({})
 
 export default connect(
   mapStateToProps,
