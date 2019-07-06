@@ -7,7 +7,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Record } from '../entities/record'
-import * as selectors from '../state/selectors'
 import { AppState } from '../state/store'
 
 interface Props {
@@ -61,7 +60,7 @@ class Records extends React.PureComponent<Props, {}> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  records: selectors.selectAllRecords(state),
+  records: state.records.records,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({})

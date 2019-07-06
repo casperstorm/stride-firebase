@@ -13,22 +13,20 @@ interface Props {
   setUser: (user: firebase.User) => void
   setRecords: (records: Array<Record>) => void
   clearUser: () => void
-  user: firebase.User
 }
 
 class App extends React.PureComponent<Props, {}> {
-  public documentRef?: firebase.firestore.DocumentReference
   public recordsObserver?: () => void
 
   public componentDidMount = async () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.props.setUser(user)
-        this.documentRef = firebase
+        const documentRef = firebase
           .firestore()
           .collection('users')
           .doc(user.uid)
-        this.recordsObserver = this.documentRef
+        this.recordsObserver = documentRef
           .collection('records')
           .onSnapshot(this.onRecordsUpdate)
       } else {
@@ -59,9 +57,7 @@ class App extends React.PureComponent<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: AppState) => ({
-  user: state.auth.user,
-})
+const mapStateToProps = (state: AppState) => ({})
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setUser: (user: firebase.User) => dispatch(ACTIONS.setUser(user)),

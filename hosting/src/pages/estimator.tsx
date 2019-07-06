@@ -1,25 +1,94 @@
+import { Table } from 'antd'
 import React from 'react'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { Distance } from '../entities/distance'
+import { Record } from '../entities/record'
+import * as selectors from '../state/selectors'
+import { AppState } from '../state/store'
+import { formatSeconds } from '../utils/time'
 
-const calculateVDOT = (seconds: number, distance: number) => {
-  const days = seconds / (3600 * 24)
-  const percentageOfV02Max =
-    0.8 +
-    0.1894393 * Math.exp(-0.012778 * days * 1440) +
-    0.2989558 * Math.exp(-0.1932605 * days * 1440)
-
-  const vdot =
-    (-4.6 +
-      0.182258 * (distance / days / 1440) +
-      0.000104 * Math.pow(distance / days / 1440, 2)) /
-    percentageOfV02Max
-
-  return vdot.toFixed(1)
+interface Props {
+  distances: Array<Distance>
+  records: Array<Record>
+  bestRecord?: Record
 }
 
-const estimator: React.FC = () => (
-  <>
-    <p>{`vdot: ${calculateVDOT(900, 5000)}`}</p>
-  </>
-)
+class Estimator extends React.PureComponent<Props, {}> {
+  public columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Pace/Km',
+      key: 'speed',
+      render: (val: any) => {
+        const { bestRecord } = this.props
+        if (!bestRecord) {
+          return '-'
+        }
 
-export default estimator
+        const distance = val as Distance
+        const estimatedPace = distance.estimatedPace(bestRecord)
+        return formatSeconds(estimatedPace, 'mm:ss')
+      },
+    },
+    {
+      title: 'Estimated time',
+      key: 'estimate',
+      render: (val: any) => {
+        const { bestRecord } = this.props
+        if (!bestRecord) {
+          return '-'
+        }
+
+        const distance = val as Distance
+        const estimatedSeconds = distance.estimatedSeconds(bestRecord)
+        return formatSeconds(estimatedSeconds)
+      },
+    },
+    {
+      title: 'Current time',
+      key: 'current',
+      render: (val: any) => {
+        const { records } = this.props
+        if (records.length < 1) {
+          return '-'
+        }
+
+        const distance = val as Distance
+        const record = records.find((r: Record) => r.meters === distance.meters)
+        if (!record) {
+          return '-'
+        }
+
+        return formatSeconds(record.seconds)
+      },
+    },
+  ]
+
+  public render() {
+    return (
+      <Table
+        rowKey="name"
+        dataSource={this.props.distances}
+        columns={this.columns}
+      />
+    )
+  }
+}
+
+const mapStateToProps = (state: AppState) => ({
+  distances: state.distances.distances,
+  bestRecord: selectors.selectBestRecordByVDOT(state),
+  records: state.records.records,
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Estimator)
