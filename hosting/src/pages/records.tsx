@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Record } from '../entities/record'
 import { AppState } from '../state/store'
+import { calculateVDOT } from '../utils/vdot'
 
 interface Props {
   records: Array<Record>
@@ -44,11 +45,11 @@ class Records extends React.PureComponent<Props, {}> {
     },
     {
       title: 'VDOT',
-      dataIndex: 'vdot',
       key: 'vdot',
       render: (val: any) => {
-        const vdot = val as () => number
-        return vdot()
+        const record = val as Record
+        return calculateVDOT(record.seconds, record.meters)
+        // return vdot()
       },
     },
   ]

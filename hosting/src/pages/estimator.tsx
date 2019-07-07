@@ -6,6 +6,10 @@ import { Distance } from '../entities/distance'
 import { Record } from '../entities/record'
 import * as selectors from '../state/selectors'
 import { AppState } from '../state/store'
+import {
+  calculateEstimatedKilometerPace,
+  calculateEstimatedSeconds,
+} from '../utils/estimate'
 import { formatSeconds } from '../utils/time'
 
 interface Props {
@@ -31,7 +35,10 @@ class Estimator extends React.PureComponent<Props, {}> {
         }
 
         const distance = val as Distance
-        const estimatedPace = distance.estimatedPace(bestRecord)
+        const estimatedPace = calculateEstimatedKilometerPace(
+          distance,
+          bestRecord
+        )
         return formatSeconds(estimatedPace, 'mm:ss')
       },
     },
@@ -45,7 +52,7 @@ class Estimator extends React.PureComponent<Props, {}> {
         }
 
         const distance = val as Distance
-        const estimatedSeconds = distance.estimatedSeconds(bestRecord)
+        const estimatedSeconds = calculateEstimatedSeconds(distance, bestRecord)
         return formatSeconds(estimatedSeconds)
       },
     },

@@ -10,6 +10,7 @@ const initialState: DistancesState = {
     new Distance('1/2 Marathon', 21097.5),
     new Distance('10K', 10000),
     new Distance('5K', 5000),
+    new Distance('3K', 3000),
   ],
 }
 

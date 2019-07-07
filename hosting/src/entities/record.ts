@@ -1,4 +1,4 @@
-import { calculateVDOT } from '../utils/vdot'
+import { metersToMiles } from '../utils/distance'
 
 export interface Record {
   key: string
@@ -15,8 +15,6 @@ export class Record {
     this.seconds = r.seconds
     this.meters = r.meters
     this.date = r.date
-    this.miles = r.meters / 1609.344
+    this.miles = metersToMiles(r.meters)
   }
-
-  public vdot = (): number => calculateVDOT(this.seconds, this.meters)
 }
