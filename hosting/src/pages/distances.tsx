@@ -17,11 +17,10 @@ interface Props {
 
 interface State {
   visible: boolean
-  confirmLoading: boolean
 }
 
 class Distances extends React.PureComponent<Props, State> {
-  public state = { visible: false, confirmLoading: false }
+  public state: State = { visible: false }
 
   // TODO: Better typing with antd: https://ant.design/components/table/#Using-in-TypeScript
   public columns = [
@@ -101,15 +100,9 @@ class Distances extends React.PureComponent<Props, State> {
 
   public handleOk = (distance: Distance) => {
     this.props.createDistance(distance)
-    // this.setState({
-    //   confirmLoading: true,
-    // })
-    // setTimeout(() => {
-    //   this.setState({
-    //     visible: false,
-    //     confirmLoading: false,
-    //   })
-    // }, 2000)
+    this.setState({
+      visible: false,
+    })
   }
 
   public handleCancel = (e: any) => {
@@ -137,7 +130,6 @@ class Distances extends React.PureComponent<Props, State> {
           </Button>
           <NewDistance
             visible={this.state.visible}
-            confirmLoading={this.state.confirmLoading}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
           />
@@ -148,7 +140,7 @@ class Distances extends React.PureComponent<Props, State> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  distances: state.distance.distances,
+  distances: selectors.selectSortedDistances(state),
   bestDistance: selectors.selectBestDistanceByVDOT(state),
 })
 

@@ -1,7 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import { all, call, select, takeLatest } from 'redux-saga/effects'
-import { Distance } from '../entities/distance'
+import { all, select, takeLatest } from 'redux-saga/effects'
+import { Distance, DistanceProperties } from '../entities/distance'
 import { CREATE_DISTANCE, DistanceActionTypes } from './distance/types'
 import { AppState } from './store'
 
@@ -12,15 +12,16 @@ function* createDistance(action: DistanceActionTypes) {
   }
 
   const distance = action.payload as Distance
+  const plain: DistanceProperties = {
+    meters: distance.meters,
+  }
+
   yield firebase
     .firestore()
     .collection('users')
     .doc(user.uid)
     .collection('distances')
-    .add({
-      meters: distance.meters,
-      miles: distance.miles,
-    })
+    .add(plain)
 }
 
 export default function* root() {

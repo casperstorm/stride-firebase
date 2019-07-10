@@ -1,4 +1,3 @@
-import { Distance } from '../../entities/distance'
 import { DistanceActionTypes, DistanceState, SET_DISTANCES } from './types'
 
 const initialState: DistanceState = {

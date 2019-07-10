@@ -5,15 +5,17 @@ export interface Record {
   date: firebase.firestore.Timestamp
 }
 
-export interface Distance {
+export interface DistanceProperties {
   meters: number
   record?: Record
 }
 
 export class Distance {
   public miles: number
+  public meters: number
+  public record?: Record
 
-  constructor(d: Distance) {
+  constructor(d: DistanceProperties) {
     this.meters = d.meters
     this.record = d.record
     this.miles = metersToMiles(d.meters)
@@ -57,9 +59,4 @@ export class Distance {
     const estimatedSeconds = this.estimatedSecondsForDistance(distance)
     return (estimatedSeconds / distance.meters) * 1000
   }
-
-  public toPlain = () => ({
-    meters: this.meters,
-    miles: this.miles,
-  })
 }

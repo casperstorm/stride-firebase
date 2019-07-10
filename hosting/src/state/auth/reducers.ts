@@ -1,9 +1,11 @@
-import firebase from 'firebase/app'
 import { AuthActionTypes, AuthState, CLEAR_USER, SET_USER } from './types'
 
 const initialState: AuthState = {}
 
-const auth = (state: AuthState = initialState, action: AuthActionTypes) => {
+const auth = (
+  state: AuthState = initialState,
+  action: AuthActionTypes
+): AuthState => {
   switch (action.type) {
     case SET_USER: {
       return { ...state, user: action.payload }
