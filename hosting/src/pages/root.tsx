@@ -4,9 +4,8 @@ import { connect } from 'react-redux'
 import { Link, Route } from 'react-router-dom'
 import { Dispatch } from 'redux'
 import { AppState } from '../state/store'
-import Estimator from './estimator'
+import Distances from './distances'
 import Login from './login'
-import Records from './records'
 
 const { Header, Sider, Content } = Layout
 
@@ -38,13 +37,8 @@ class Root extends React.PureComponent<{}, State> {
             </Menu.Item>
             <Menu.Item key="2">
               <Icon type="video-camera" />
-              <span>estimator</span>
-              <Link to="/estimator" />
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="upload" />
-              <span>records</span>
-              <Link to="/records" />
+              <span>distances</span>
+              <Link to="/distances" />
             </Menu.Item>
           </Menu>
         </Sider>
@@ -64,8 +58,7 @@ class Root extends React.PureComponent<{}, State> {
               minHeight: 280,
             }}>
             <Route path="/login" component={Login} />
-            <Route path="/estimator" component={Estimator} />
-            <Route path="/records" component={Records} />
+            <Route path="/distances" component={Distances} />
           </Content>
         </Layout>
       </Layout>

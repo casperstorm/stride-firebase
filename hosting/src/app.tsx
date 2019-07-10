@@ -4,19 +4,20 @@ import 'firebase/firestore'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Record } from './entities/record'
+import { Distance } from './entities/distance'
 import Root from './pages/root'
-import * as ACTIONS from './state/actions'
+import { clearUser, setUser } from './state/auth/actions'
+import { setDistances } from './state/distance/actions'
 import { AppState } from './state/store'
 
 interface Props {
   setUser: (user: firebase.User) => void
-  setRecords: (records: Array<Record>) => void
+  setDistances: (distances: Array<Distance>) => void
   clearUser: () => void
 }
 
 class App extends React.PureComponent<Props, {}> {
-  public recordsObserver?: () => void
+  public distancesObserver?: () => void
 
   public componentDidMount = async () => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -26,9 +27,9 @@ class App extends React.PureComponent<Props, {}> {
           .firestore()
           .collection('users')
           .doc(user.uid)
-        this.recordsObserver = documentRef
-          .collection('records')
-          .onSnapshot(this.onRecordsUpdate)
+        this.distancesObserver = documentRef
+          .collection('distances')
+          .onSnapshot(this.onDistancesUpdate)
       } else {
         this.props.clearUser()
       }
@@ -36,8 +37,8 @@ class App extends React.PureComponent<Props, {}> {
   }
 
   public componentWillUnmount() {
-    if (this.recordsObserver) {
-      this.recordsObserver()
+    if (this.distancesObserver) {
+      this.distancesObserver()
     }
   }
 
@@ -45,24 +46,24 @@ class App extends React.PureComponent<Props, {}> {
     return <Root />
   }
 
-  private onRecordsUpdate = (snapshot: firebase.firestore.QuerySnapshot) => {
-    const records: Array<Record> = []
+  private onDistancesUpdate = (snapshot: firebase.firestore.QuerySnapshot) => {
+    const distances: Array<Distance> = []
     snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
-      const rawRecord = doc.data() as Record
-      const record: Record = new Record({ ...rawRecord, key: doc.id })
-      records.push(record)
+      const distance: Distance = new Distance(doc.data() as Distance)
+      distances.push(distance)
     })
 
-    this.props.setRecords(records)
+    this.props.setDistances(distances)
   }
 }
 
 const mapStateToProps = (state: AppState) => ({})
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setUser: (user: firebase.User) => dispatch(ACTIONS.setUser(user)),
-  clearUser: () => dispatch(ACTIONS.clearUser()),
-  setRecords: (records: Array<Record>) => dispatch(ACTIONS.setRecords(records)),
+  setUser: (user: firebase.User) => dispatch(setUser(user)),
+  clearUser: () => dispatch(clearUser()),
+  setDistances: (distances: Array<Distance>) =>
+    dispatch(setDistances(distances)),
 })
 
 export default connect(

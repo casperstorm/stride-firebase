@@ -1,18 +1,13 @@
-import { Record } from '../entities/record'
-import { calculateVDOT } from '../utils/vdot'
+import { Distance } from '../entities/distance'
 import { AppState } from './store'
 
-export const selectBestRecordByVDOT = (state: AppState) => {
-  const records = state.records.records
-  if (records.length < 1) {
-    return null
+export const selectBestDistanceByVDOT = (state: AppState) => {
+  const distances = state.distance.distances
+  if (distances.length < 1) {
+    return undefined
   }
 
-  const record = records.reduce((prev: Record, current: Record) => {
-    const p = calculateVDOT(prev.seconds, prev.meters)
-    const c = calculateVDOT(current.seconds, current.meters)
-    return p > c ? prev : current
-  })
-
-  return record
+  return distances.reduce((prev: Distance, current: Distance) =>
+    prev.vdot() > current.vdot() ? prev : current
+  )
 }
