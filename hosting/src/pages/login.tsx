@@ -4,9 +4,7 @@ import 'firebase/auth'
 import React from 'react'
 
 const clicked = async () => {
-  console.log('clicked')
-  const res = await firebase.auth().signInWithEmailAndPassword('', '')
-  console.log(res)
+  await firebase.auth().signInWithEmailAndPassword('', '')
 }
 
 const login: React.FC = () => (

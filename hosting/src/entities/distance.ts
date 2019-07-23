@@ -1,33 +1,37 @@
+import moment from 'moment'
 import { metersToMiles } from '../utils/distance'
 
-export interface Record {
-  seconds: number
-  date: firebase.firestore.Timestamp
+export interface IRecord {
+  time: moment.Moment
 }
 
-export interface DistanceProperties {
+export interface IDistance {
+  id: string
   meters: number
-  record?: Record
+  record?: IRecord
 }
 
 export class Distance {
-  public miles: number
+  public id: string
   public meters: number
-  public record?: Record
+  public miles: number
+  public record: IRecord
 
-  constructor(d: DistanceProperties) {
+  constructor(d: IDistance) {
+    this.id = d.id
     this.meters = d.meters
-    this.record = d.record
     this.miles = metersToMiles(d.meters)
+    this.record = {
+      time: moment(d.record ? d.record.time : '00:00:00', 'HH:mm:ss'),
+    }
   }
 
   public vdot = (): number => {
-    if (!this.record) {
+    if (this.recordInSeconds() < 1) {
       return 0
     }
 
-    const { seconds } = this.record
-    const days: number = seconds / (3600 * 24)
+    const days: number = this.recordInSeconds() / (3600 * 24)
     const percentageOfV02Max: number =
       0.8 +
       0.1894393 * Math.exp(-0.012778 * days * 1440) +
@@ -42,21 +46,19 @@ export class Distance {
     return vdot
   }
 
-  public estimatedSecondsForDistance = (distance: Distance): number => {
-    if (!this.record) {
-      return 0
-    }
-    return (
-      this.record.seconds *
-      Math.pow(
-        metersToMiles(distance.meters) / metersToMiles(this.meters),
-        1.06
-      )
-    )
-  }
+  public estimatedSecondsForDistance = (distance: Distance): number =>
+    this.recordInSeconds() *
+    Math.pow(metersToMiles(distance.meters) / metersToMiles(this.meters), 1.06)
 
   public estimatedKilometerPaceForDistance = (distance: Distance): number => {
     const estimatedSeconds = this.estimatedSecondsForDistance(distance)
     return (estimatedSeconds / distance.meters) * 1000
+  }
+
+  private recordInSeconds = (): number => {
+    const hours = this.record.time.hours()
+    const minutes = this.record.time.minutes()
+    const seconds = this.record.time.seconds()
+    return hours * 3600 + minutes * 60 + seconds
   }
 }

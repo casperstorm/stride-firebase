@@ -4,7 +4,7 @@ import 'firebase/firestore'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Distance, DistanceProperties } from './entities/distance'
+import { Distance, IDistance } from './entities/distance'
 import Root from './pages/root'
 import { clearUser, setUser } from './state/auth/actions'
 import { setDistances } from './state/distance/actions'
@@ -49,7 +49,11 @@ class App extends React.PureComponent<Props, {}> {
   private onDistancesUpdate = (snapshot: firebase.firestore.QuerySnapshot) => {
     const distances: Array<Distance> = []
     snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
-      const distance: Distance = new Distance(doc.data() as DistanceProperties)
+      const id = doc.id
+      const distance: Distance = new Distance(({
+        ...doc.data(),
+        id,
+      } as unknown) as IDistance)
       distances.push(distance)
     })
 

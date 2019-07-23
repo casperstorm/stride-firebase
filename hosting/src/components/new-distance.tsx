@@ -1,6 +1,6 @@
 import { InputNumber, Modal, Typography } from 'antd'
 import React from 'react'
-import { Distance, DistanceProperties } from '../entities/distance'
+import { Distance, IDistance } from '../entities/distance'
 
 const { Text } = Typography
 
@@ -60,7 +60,7 @@ class NewDistance extends React.PureComponent<Props, State> {
 
     const distance: Distance = new Distance(({
       meters,
-    } as unknown) as DistanceProperties)
+    } as unknown) as IDistance)
     this.props.onOk(distance)
   }
 

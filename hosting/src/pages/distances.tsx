@@ -1,10 +1,15 @@
-import { Button, Table } from 'antd'
+import { Button, Divider, Popconfirm, Table, TimePicker } from 'antd'
+import moment from 'moment'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import NewDistance from '../components/new-distance'
-import { Distance } from '../entities/distance'
-import { createDistance } from '../state/distance/actions'
+import { Distance, IDistance, IRecord } from '../entities/distance'
+import {
+  createDistance,
+  deleteDistance,
+  setRecordForDistance,
+} from '../state/distance/actions'
 import * as selectors from '../state/selectors'
 import { AppState } from '../state/store'
 import { formatSeconds } from '../utils/time'
@@ -13,14 +18,18 @@ interface Props {
   distances: Array<Distance>
   bestDistance?: Distance
   createDistance: (distance: Distance) => void
+  deleteDistance: (distance: Distance) => void
+  setRecordForDistance: (time: string, distance: Distance) => void
 }
 
 interface State {
-  visible: boolean
+  newDistanceModalVisible: boolean
 }
 
 class Distances extends React.PureComponent<Props, State> {
-  public state: State = { visible: false }
+  public state: State = {
+    newDistanceModalVisible: false,
+  }
 
   // TODO: Better typing with antd: https://ant.design/components/table/#Using-in-TypeScript
   public columns = [
@@ -70,11 +79,15 @@ class Distances extends React.PureComponent<Props, State> {
       key: 'current',
       render: (val: any) => {
         const distance = val as Distance
-        if (!distance.record) {
-          return '-'
-        }
-
-        return formatSeconds(distance.record.seconds)
+        return (
+          <TimePicker
+            allowClear={false}
+            onChange={(time: moment.Moment, timeString: string) => {
+              this.props.setRecordForDistance(timeString, distance)
+            }}
+            defaultValue={distance.record.time}
+          />
+        )
       },
     },
     {
@@ -90,25 +103,48 @@ class Distances extends React.PureComponent<Props, State> {
         return vdot
       },
     },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (val: any) => {
+        const distance = val as Distance
+        return (
+          <span>
+            <Popconfirm
+              title="Are you sure?"
+              onConfirm={() => this.handleDistanceDeleteClick(distance)}
+              okText="Yes"
+              cancelText="No">
+              <Button type="danger" size={'small'}>
+                Delete
+              </Button>
+            </Popconfirm>
+          </span>
+        )
+      },
+    },
   ]
 
-  public showModal = () => {
+  public handleDistanceDeleteClick = (distance: Distance) => {
+    this.props.deleteDistance(distance)
+  }
+
+  public showNewDistanceModal = () => {
     this.setState({
-      visible: true,
+      newDistanceModalVisible: true,
     })
   }
 
-  public handleOk = (distance: Distance) => {
+  public handleNewDistance = (distance: Distance) => {
     this.props.createDistance(distance)
     this.setState({
-      visible: false,
+      newDistanceModalVisible: false,
     })
   }
 
   public handleCancel = (e: any) => {
-    console.log(e)
     this.setState({
-      visible: false,
+      newDistanceModalVisible: false,
     })
   }
 
@@ -119,21 +155,21 @@ class Distances extends React.PureComponent<Props, State> {
           size={'small'}
           bordered={true}
           pagination={false}
-          rowKey="meters"
+          rowKey="id"
           dataSource={this.props.distances}
           columns={this.columns}
         />
         <br />
         <div>
-          <Button type="primary" onClick={this.showModal}>
+          <Button type="primary" onClick={this.showNewDistanceModal}>
             Add new distance
           </Button>
-          <NewDistance
-            visible={this.state.visible}
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-          />
         </div>
+        <NewDistance
+          visible={this.state.newDistanceModalVisible}
+          onOk={this.handleNewDistance}
+          onCancel={this.handleCancel}
+        />
       </>
     )
   }
@@ -146,6 +182,9 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   createDistance: (distance: Distance) => dispatch(createDistance(distance)),
+  deleteDistance: (distance: Distance) => dispatch(deleteDistance(distance)),
+  setRecordForDistance: (time: string, distance: Distance) =>
+    dispatch(setRecordForDistance(time, distance)),
 })
 
 export default connect(

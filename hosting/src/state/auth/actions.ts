@@ -1,11 +1,11 @@
 import firebase from 'firebase/app'
-import { AuthActionTypes, CLEAR_USER, SET_USER } from './types'
+import { CLEAR_USER, ClearUserAction, SET_USER, SetUserAction } from './types'
 
-export const setUser = (user: firebase.User): AuthActionTypes => ({
+export const setUser = (user: firebase.User): SetUserAction => ({
   type: SET_USER,
   payload: user,
 })
 
-export const clearUser = (): AuthActionTypes => ({
+export const clearUser = (): ClearUserAction => ({
   type: CLEAR_USER,
 })

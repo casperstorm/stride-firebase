@@ -7,12 +7,12 @@ export interface AuthState {
 export const SET_USER = 'SET_USER'
 export const CLEAR_USER = 'CLEAR_USER'
 
-interface SetUserAction {
+export interface SetUserAction {
   type: typeof SET_USER
   payload: firebase.User
 }
 
-interface ClearUserAction {
+export interface ClearUserAction {
   type: typeof CLEAR_USER
 }
 
