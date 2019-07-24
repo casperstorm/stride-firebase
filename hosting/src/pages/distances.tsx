@@ -1,10 +1,10 @@
-import { Button, Divider, Popconfirm, Table, TimePicker } from 'antd'
+import { Button, Popconfirm, Table, TimePicker } from 'antd'
 import moment from 'moment'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import NewDistance from '../components/new-distance'
-import { Distance, IDistance, IRecord } from '../entities/distance'
+import { Distance } from '../entities/distance'
 import {
   createDistance,
   deleteDistance,
@@ -17,7 +17,7 @@ import { formatSeconds } from '../utils/time'
 interface Props {
   distances: Array<Distance>
   bestDistance?: Distance
-  createDistance: (distance: Distance) => void
+  createDistance: (meters: number) => void
   deleteDistance: (distance: Distance) => void
   setRecordForDistance: (time: string, distance: Distance) => void
 }
@@ -135,8 +135,8 @@ class Distances extends React.PureComponent<Props, State> {
     })
   }
 
-  public handleNewDistance = (distance: Distance) => {
-    this.props.createDistance(distance)
+  public handleNewDistance = (meters: number) => {
+    this.props.createDistance(meters)
     this.setState({
       newDistanceModalVisible: false,
     })
@@ -181,7 +181,7 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  createDistance: (distance: Distance) => dispatch(createDistance(distance)),
+  createDistance: (meters: number) => dispatch(createDistance(meters)),
   deleteDistance: (distance: Distance) => dispatch(deleteDistance(distance)),
   setRecordForDistance: (time: string, distance: Distance) =>
     dispatch(setRecordForDistance(time, distance)),

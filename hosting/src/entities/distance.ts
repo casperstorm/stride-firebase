@@ -5,24 +5,18 @@ export interface IRecord {
   time: moment.Moment
 }
 
-export interface IDistance {
-  id: string
-  meters: number
-  record?: IRecord
-}
-
 export class Distance {
   public id: string
   public meters: number
   public miles: number
   public record: IRecord
 
-  constructor(d: IDistance) {
-    this.id = d.id
-    this.meters = d.meters
-    this.miles = metersToMiles(d.meters)
+  constructor(id: string, meters: number, record: IRecord) {
+    this.id = id
+    this.meters = meters
+    this.miles = metersToMiles(meters)
     this.record = {
-      time: moment(d.record ? d.record.time : '00:00:00', 'HH:mm:ss'),
+      time: moment(record.time ? record.time : '00:00:00', 'HH:mm:ss'),
     }
   }
 

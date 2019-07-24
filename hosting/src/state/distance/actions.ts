@@ -17,9 +17,9 @@ export const setDistances = (
   payload: distances,
 })
 
-export const createDistance = (distance: Distance): CreateDistanceAction => ({
+export const createDistance = (meters: number): CreateDistanceAction => ({
   type: CREATE_DISTANCE,
-  payload: distance,
+  payload: meters,
 })
 
 export const deleteDistance = (distance: Distance): DeleteDistanceAction => ({

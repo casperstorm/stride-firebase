@@ -19,9 +19,12 @@ function* createDistance(action: CreateDistanceAction) {
     return
   }
 
-  const distance = action.payload as Distance
+  const meters = action.payload as number
   const raw = {
-    meters: distance.meters,
+    meters,
+    record: {
+      time: '00:00:00',
+    },
   }
 
   yield firebase

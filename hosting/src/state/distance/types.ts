@@ -21,7 +21,7 @@ export interface DeleteDistanceAction {
 
 export interface CreateDistanceAction {
   type: typeof CREATE_DISTANCE
-  payload: Distance
+  payload: number
 }
 
 export interface SetDistanceRecordAction {

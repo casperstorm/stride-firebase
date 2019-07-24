@@ -1,6 +1,5 @@
 import { InputNumber, Modal, Typography } from 'antd'
 import React from 'react'
-import { Distance, IDistance } from '../entities/distance'
 
 const { Text } = Typography
 
@@ -8,7 +7,7 @@ interface Props {
   visible: boolean
   confirmLoading?: boolean
   onCancel?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void
-  onOk: (distance: Distance) => void
+  onOk: (meters: number) => void
 }
 
 interface State {
@@ -54,14 +53,7 @@ class NewDistance extends React.PureComponent<Props, State> {
 
   private handleOk = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const { meters } = this.state
-    if (!meters) {
-      return
-    }
-
-    const distance: Distance = new Distance(({
-      meters,
-    } as unknown) as IDistance)
-    this.props.onOk(distance)
+    this.props.onOk(meters)
   }
 
   private onMetersChange = (meters?: number) => {
