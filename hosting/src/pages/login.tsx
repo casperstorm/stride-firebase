@@ -8,9 +8,11 @@ const clicked = async () => {
 }
 
 const login: React.FC = () => (
-  <Button onClick={clicked} type="primary">
-    Button
-  </Button>
+  <div style={{ margin: '16px 0px 16px 0px' }}>
+    <Button onClick={clicked} type="primary">
+      Login
+    </Button>
+  </div>
 )
 
 export default login
