@@ -23,11 +23,17 @@ class Root extends React.PureComponent<{}, State> {
 
   public render() {
     return (
-      <Layout style={{ height: '100vh', padding: '25px 25px 25px 25px' }}>
-        <div style={{ width: '25vh' }}>
+      <Layout
+        style={{
+          height: '100vh',
+          padding: '25px 25px 25px 25px',
+          background: 'white',
+        }}>
+        <div>
           <Login />
         </div>
-        <div style={{ width: '75vh' }}>
+        <br />
+        <div>
           <Distances />
         </div>
       </Layout>

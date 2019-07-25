@@ -6,14 +6,15 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Distance } from './entities/distance'
 import Root from './pages/root'
-import { clearUser, setUser } from './state/auth/actions'
-import { setDistances } from './state/distance/actions'
+import { setUser, signOut } from './state/auth/actions'
+import { purgeDistances, setDistances } from './state/distance/actions'
 import { AppState } from './state/store'
 
 interface Props {
   setUser: (user: firebase.User) => void
   setDistances: (distances: Array<Distance>) => void
-  clearUser: () => void
+  signOut: () => void
+  purgeDistances: () => void
 }
 
 class App extends React.PureComponent<Props, {}> {
@@ -31,7 +32,8 @@ class App extends React.PureComponent<Props, {}> {
           .collection('distances')
           .onSnapshot(this.onDistancesUpdate)
       } else {
-        this.props.clearUser()
+        this.props.signOut()
+        this.props.purgeDistances()
       }
     })
   }
@@ -64,7 +66,8 @@ const mapStateToProps = (state: AppState) => ({})
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setUser: (user: firebase.User) => dispatch(setUser(user)),
-  clearUser: () => dispatch(clearUser()),
+  signOut: () => dispatch(signOut()),
+  purgeDistances: () => dispatch(purgeDistances()),
   setDistances: (distances: Array<Distance>) =>
     dispatch(setDistances(distances)),
 })

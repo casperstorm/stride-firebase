@@ -152,6 +152,7 @@ class Distances extends React.PureComponent<Props, State> {
     return (
       <>
         <Table
+          style={{ background: 'white' }}
           size={'small'}
           bordered={true}
           pagination={false}

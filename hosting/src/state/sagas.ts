@@ -1,8 +1,8 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import moment from 'moment'
 import { all, select, takeLatest } from 'redux-saga/effects'
 import { Distance } from '../entities/distance'
+import { SIGN_IN, SignInAction } from './auth/types'
 import {
   CREATE_DISTANCE,
   CreateDistanceAction,
@@ -67,10 +67,16 @@ function* setDistanceRecord(action: SetDistanceRecordAction) {
     .update({ record: { time } })
 }
 
+function* signIn(action: SignInAction) {
+  const { email, password } = action.payload
+  yield firebase.auth().signInWithEmailAndPassword(email, password)
+}
+
 export default function* root() {
   yield all([
     takeLatest(CREATE_DISTANCE, createDistance),
     takeLatest(DELETE_DISTANCE, deleteDistance),
     takeLatest(SET_DISTANCE_RECORD, setDistanceRecord),
+    takeLatest(SIGN_IN, signIn),
   ])
 }

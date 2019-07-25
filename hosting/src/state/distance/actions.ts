@@ -4,6 +4,8 @@ import {
   CreateDistanceAction,
   DELETE_DISTANCE,
   DeleteDistanceAction,
+  PURGE_DISTANCES,
+  PurgeDistancesAction,
   SET_DISTANCE_RECORD,
   SET_DISTANCES,
   SetDistanceRecordAction,
@@ -33,4 +35,8 @@ export const setRecordForDistance = (
 ): SetDistanceRecordAction => ({
   type: SET_DISTANCE_RECORD,
   payload: { time, distance },
+})
+
+export const purgeDistances = (): PurgeDistancesAction => ({
+  type: PURGE_DISTANCES,
 })

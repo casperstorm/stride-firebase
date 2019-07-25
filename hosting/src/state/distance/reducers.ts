@@ -1,4 +1,9 @@
-import { DistanceActionTypes, DistanceState, SET_DISTANCES } from './types'
+import {
+  DistanceActionTypes,
+  DistanceState,
+  PURGE_DISTANCES,
+  SET_DISTANCES,
+} from './types'
 
 const initialState: DistanceState = {
   distances: [],
@@ -11,6 +16,9 @@ const distances = (
   switch (action.type) {
     case SET_DISTANCES: {
       return { ...state, distances: action.payload }
+    }
+    case PURGE_DISTANCES: {
+      return initialState
     }
     default:
       return state

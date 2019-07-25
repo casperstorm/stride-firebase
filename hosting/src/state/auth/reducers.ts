@@ -1,4 +1,4 @@
-import { AuthActionTypes, AuthState, CLEAR_USER, SET_USER } from './types'
+import { AuthActionTypes, AuthState, SET_USER, SIGN_OUT } from './types'
 
 const initialState: AuthState = {}
 
@@ -10,7 +10,7 @@ const auth = (
     case SET_USER: {
       return { ...state, user: action.payload }
     }
-    case CLEAR_USER: {
+    case SIGN_OUT: {
       return initialState
     }
     default:
