@@ -5,6 +5,7 @@ import { Dispatch } from 'redux'
 import { AppState } from '../state/store'
 import Distances from './distances'
 import Login from './login'
+import Options from './options'
 
 interface State {
   collapsed: boolean
@@ -29,13 +30,11 @@ class Root extends React.PureComponent<{}, State> {
           padding: '25px 25px 25px 25px',
           background: 'white',
         }}>
-        <div>
-          <Login />
-        </div>
+        <Login />
         <br />
-        <div>
-          <Distances />
-        </div>
+        <Distances />
+        <br />
+        <Options />
       </Layout>
     )
   }

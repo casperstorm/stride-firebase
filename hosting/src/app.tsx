@@ -28,6 +28,7 @@ class App extends React.PureComponent<Props, {}> {
           .firestore()
           .collection('users')
           .doc(user.uid)
+
         this.distancesObserver = documentRef
           .collection('distances')
           .onSnapshot(this.onDistancesUpdate)

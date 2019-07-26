@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Table, TimePicker } from 'antd'
+import { Button, Popconfirm, Table, Tag, TimePicker } from 'antd'
 import moment from 'moment'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -91,6 +91,11 @@ class Distances extends React.PureComponent<Props, State> {
       },
     },
     {
+      title: 'Tags',
+      key: 'tags',
+      render: (val: any) => <Tag color="green">Best effort</Tag>,
+    },
+    {
       title: 'VDOT',
       key: 'vdot',
       render: (val: any) => {
@@ -100,7 +105,7 @@ class Distances extends React.PureComponent<Props, State> {
           return '-'
         }
 
-        return vdot
+        return vdot.toFixed(1)
       },
     },
     {
