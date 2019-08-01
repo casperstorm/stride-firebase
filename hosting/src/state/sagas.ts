@@ -57,14 +57,14 @@ function* setDistanceRecord(action: SetDistanceRecordAction) {
     return
   }
 
-  const { time, distance } = action.payload
+  const { seconds, distance } = action.payload
   yield firebase
     .firestore()
     .collection('users')
     .doc(user.uid)
     .collection('distances')
     .doc(distance.id)
-    .update({ record: { time } })
+    .update({ record: { duration: seconds } })
 }
 
 function* signIn(action: SignInAction) {

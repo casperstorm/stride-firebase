@@ -12,16 +12,29 @@ const { Text } = Typography
 
 interface Props {
   setOptions: (options: OptionsState) => void
+  showVDOT: boolean
+  showTags: boolean
 }
 
 class Options extends React.PureComponent<Props> {
   public plainOptions = ['VDOT', 'Tags']
 
   public render() {
+    const { showVDOT, showTags } = this.props
+    const defaultValues = []
+    if (showTags) {
+      defaultValues.push('Tags')
+    }
+
+    if (showVDOT) {
+      defaultValues.push('VDOT')
+    }
+
     return (
       <>
         <Text strong>Distance options</Text>
         <Checkbox.Group
+          defaultValue={defaultValues}
           options={this.plainOptions}
           onChange={this.onCheckboxChange}
         />
@@ -38,7 +51,10 @@ class Options extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state: AppState) => ({})
+const mapStateToProps = (state: AppState) => ({
+  showVDOT: state.options.showVDOT,
+  showTags: state.options.showTags,
+})
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setOptions: (options: OptionsState) => dispatch(setOptions(options)),
 })

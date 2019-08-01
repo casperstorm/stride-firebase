@@ -30,11 +30,11 @@ export const deleteDistance = (distance: Distance): DeleteDistanceAction => ({
 })
 
 export const setRecordForDistance = (
-  time: string,
+  seconds: number,
   distance: Distance
 ): SetDistanceRecordAction => ({
   type: SET_DISTANCE_RECORD,
-  payload: { time, distance },
+  payload: { seconds, distance },
 })
 
 export const purgeDistances = (): PurgeDistancesAction => ({

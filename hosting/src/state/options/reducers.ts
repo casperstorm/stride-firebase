@@ -2,7 +2,7 @@ import { OptionsActionTypes, OptionsState, SET_OPTIONS } from './types'
 
 const initialState: OptionsState = {
   showVDOT: false,
-  showTags: false,
+  showTags: true,
 }
 
 const auth = (

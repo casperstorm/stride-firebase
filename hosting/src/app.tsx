@@ -54,7 +54,7 @@ class App extends React.PureComponent<Props, {}> {
     snapshot.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
       const id = doc.id
       const { meters, record } = doc.data()
-      const distance: Distance = new Distance(id, meters, record)
+      const distance: Distance = new Distance(id, meters, record.duration)
 
       distances.push(distance)
     })

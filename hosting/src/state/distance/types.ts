@@ -27,7 +27,7 @@ export interface CreateDistanceAction {
 
 export interface SetDistanceRecordAction {
   type: typeof SET_DISTANCE_RECORD
-  payload: { time: string; distance: Distance }
+  payload: { seconds: number; distance: Distance }
 }
 
 export interface PurgeDistancesAction {
