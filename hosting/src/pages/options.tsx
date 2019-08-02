@@ -1,5 +1,4 @@
 import { Checkbox, Typography } from 'antd'
-import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import React from 'react'
 import { connect } from 'react-redux'

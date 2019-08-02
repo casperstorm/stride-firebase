@@ -150,18 +150,20 @@ class Distances extends React.PureComponent<Props, State> {
           const { bestDistanceByVDOT, bestDistanceByDifference } = this.props
           const tags = []
           if (bestDistanceByVDOT && bestDistanceByVDOT.id === record.id) {
-            tags.push(<Tag color="green">{`Best record`}</Tag>)
+            tags.push(<Tag key={`best`} color="green">{`Best record`}</Tag>)
           }
 
           if (
             bestDistanceByDifference &&
             bestDistanceByDifference.id === record.id
           ) {
-            tags.push(<Tag color="orange">{`Weakest record`}</Tag>)
+            tags.push(
+              <Tag key={`weakest`} color="orange">{`Weakest record`}</Tag>
+            )
           }
 
           if (record.record.duration.asSeconds() === 0) {
-            tags.push(<Tag>{`No record`}</Tag>)
+            tags.push(<Tag key={`no-record`}>{`No record`}</Tag>)
           }
 
           return tags

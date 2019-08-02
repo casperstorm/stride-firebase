@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import moment from 'moment'
 import { Distance } from '../entities/distance'
 import { AppState } from './store'
 
@@ -7,11 +6,13 @@ export const selectBestDistanceByVDOT = (
   state: AppState
 ): Distance | undefined => {
   const distances = state.distance.distances
-  if (distances.length < 1) {
+  const filtered = _.filter(distances, (d) => d.record.duration.asSeconds() > 0)
+
+  if (filtered.length < 1) {
     return undefined
   }
 
-  return distances.reduce((prev: Distance, current: Distance) =>
+  return filtered.reduce((prev: Distance, current: Distance) =>
     prev.vdot() > current.vdot() ? prev : current
   )
 }
